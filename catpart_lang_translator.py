@@ -1,4 +1,5 @@
 # required googletrans==4.0.0-rc1
+# translates names of bodies and geometrical sets using google translate
 
 import os
 import sys
