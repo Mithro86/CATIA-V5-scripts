@@ -1,3 +1,5 @@
+# symmetry of geometrical set keeping parent color.
+
 import os
 import sys
 
