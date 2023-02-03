@@ -106,7 +106,8 @@ for root, dirs, files in os.walk(source_directory):
 				for hybrid_body in hybrid_bodies:
 					selection.add(hybrid_body)
 
-				selection.delete()
+				if selection.count > 0:
+					selection.delete()
 
 				body_main.name = "PartBody"
 
@@ -123,6 +124,10 @@ for root, dirs, files in os.walk(source_directory):
 				part.update()
 				document.save()
 				document.close()
+
+			else:
+				document.close()
+
 for root, dirs, files in os.walk(source_directory):
 
     for file in files:
