@@ -123,4 +123,13 @@ for root, dirs, files in os.walk(source_directory):
 				part.update()
 				document.save()
 				document.close()
+for root, dirs, files in os.walk(source_directory):
+
+    for file in files:
+
+        # only get dat files.
+        if os.path.splitext(file)[1] == ".dat":
+            # create filename with path.
+            file_name = os.path.join(source_directory, file)
+            os.remove(file_name)
 print("Killing finished!")
