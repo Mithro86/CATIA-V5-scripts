@@ -23,6 +23,7 @@ for root, dirs, files in os.walk(source_directory):
 			parameters = part.parameters
 			relations = part.relations
 			axis_systems = part.axis_systems
+			annotations = part.annotation_sets
 
 			selection = document.selection
 			vis_properties = selection.vis_properties
@@ -106,6 +107,9 @@ for root, dirs, files in os.walk(source_directory):
 
 				for axis_system in axis_systems:
 					selection.add(axis_system)
+
+				for annotation in annotations:
+					selection.add(annotation)
 
 				for hybrid_body in hybrid_bodies:
 					selection.add(hybrid_body)
