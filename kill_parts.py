@@ -1,3 +1,5 @@
+# Opens CATPart(s) from source. Copies visible bodies. Pastes as result (while preserving color). Removes everthing else. Saves (keeps UUID intact).
+
 import os
 
 from pycatia import catia
@@ -24,6 +26,9 @@ for root, dirs, files in os.walk(source_directory):
 			relations = part.relations
 			axis_systems = part.axis_systems
 			annotations = part.annotation_sets
+			product = document.product
+			publications = product.publications
+
 
 			selection = document.selection
 			vis_properties = selection.vis_properties
@@ -99,12 +104,6 @@ for root, dirs, files in os.walk(source_directory):
 					else:
 						continue
 					
-				#for relation in relations:
-				#	selection.add(relation)
-
-				#for parameter in parameters:
-				#	selection.add(parameter)
-
 				for axis_system in axis_systems:
 					selection.add(axis_system)
 
@@ -115,6 +114,24 @@ for root, dirs, files in os.walk(source_directory):
 					selection.add(hybrid_body)
 
 				if selection.count > 0:
+					selection.delete()
+
+					pub_list = []
+
+					for publication in publications:
+						pub_list.append(publication.name)
+
+					for x in pub_list:
+						publications.remove(x)
+
+					selection.clear()
+
+					for relation in relations:
+						selection.add(relation)
+
+					for parameter in parameters:
+						selection.add(parameter)
+
 					selection.delete()
 
 				body_main.name = "PartBody"
