@@ -22,6 +22,7 @@ for root, dirs, files in os.walk(source_directory):
 			hybrid_bodies = part.hybrid_bodies
 			parameters = part.parameters
 			relations = part.relations
+			axis_systems = part.axis_systems
 
 			selection = document.selection
 			vis_properties = selection.vis_properties
@@ -97,11 +98,14 @@ for root, dirs, files in os.walk(source_directory):
 					else:
 						continue
 					
-				for relation in relations:
-					selection.add(relation)
+				#for relation in relations:
+				#	selection.add(relation)
 
-				for parameter in parameters:
-					selection.add(parameter)
+				#for parameter in parameters:
+				#	selection.add(parameter)
+
+				for axis_system in axis_systems:
+					selection.add(axis_system)
 
 				for hybrid_body in hybrid_bodies:
 					selection.add(hybrid_body)
