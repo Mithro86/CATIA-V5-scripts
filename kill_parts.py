@@ -1,5 +1,4 @@
 # Saves root CATProduct and close it. Opens CATPart(s) from source. Copies visible bodies. Pastes as result (while preserving color). Removes everthing else. Saves (keeps UUID intact).
-
 import os
 import sys
 
@@ -12,6 +11,7 @@ root_doc = document.name
 
 buttons = 4
 result = caa.message_box("This will isolate all parts in the product. Are you sure?", buttons=buttons, title="Isolate product")
+
 
 if result == 6:
 	document.save()
@@ -140,10 +140,10 @@ if result == 6:
 							selection.add(relation)
 
 						for parameter in parameters:
-							if parameter.name == "Material":
-								continue
-							else:
+							if parameter.user_access_mode == 2:
 								selection.add(parameter)
+							else:
+								continue								
 
 						try:
 							selection.delete()
