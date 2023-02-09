@@ -1,8 +1,19 @@
 # Saves root CATProduct and close it. Opens CATPart(s) from source. Copies visible bodies. Pastes as result (while preserving color). Removes everthing else. Saves (keeps UUID intact).
 import os
 import sys
+import zipfile
+from datetime import datetime
 
 from pycatia import catia
+
+
+def zipdir(path, ziph):
+    # ziph is zipfile handle
+    for root, dirs, files in os.walk(path):
+        for file in files:
+            ziph.write(os.path.join(root, file), 
+                       os.path.relpath(os.path.join(root, file), 
+                                       os.path.join(path, '..')))
 
 caa = catia()
 documents = caa.documents
@@ -190,6 +201,12 @@ if result == 6:
 	            # create filename with path.
 	            file_name = os.path.join(source_directory, file)
 	            os.remove(file_name)
+
+	now = datetime.now()
+	date_stamp = now.strftime("%Y_%m_%d")
+
+	with zipfile.ZipFile(f"Status_{date_stamp}.zip", 'w', zipfile.ZIP_DEFLATED) as zipf:
+		zipdir(source_directory, zipf)
 
 	buttons = 4
 	result = caa.message_box("Operation finished. Do you want to open root product?", buttons=buttons, title="Isolate product")
