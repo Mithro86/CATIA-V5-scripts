@@ -1,15 +1,12 @@
 # Activate shareable license using pywinauto
-# Requirement screen height > 900px
-
+# Requirement screen height > 950px
 from pywinauto.application import Application
 from pywinauto import mouse
 from pywinauto.keyboard import send_keys
-from pywinauto.timings import Timings
+from time import sleep
 
-Timings.fast()
-
-# License to activate
-license = "PEO"
+# Licenses to activate
+licenses = ["PEO", "KIN", "GAS", "FMD"]
 
 # Dictionary of scroll position
 d = {
@@ -129,27 +126,49 @@ send_keys("o")
 # Connect to Options
 app = Application().connect(title="Options", timeout=30)
 window = app.Dialog
-window.move_window(x=-5, y=0, width=None, height=951, repaint=True)
+window.move_window(x=-7, y=0, width=None, height=951, repaint=True)
 
 # Get position of window
 rect = window.rectangle()
 
-# Click on Shareable Products tab
+# Click on "General" in TreeView
+mouse.click(button="right", coords=(rect.left + 150, rect.top + 60))
+send_keys("r")
+mouse.click(button="left", coords=(rect.left + 50, rect.top + 70))
+
+sleep(3)
+
+# Click on "Shareable Products" tab
 mouse.click(button="left", coords=(rect.left + 400, rect.top + 54))
 
 # Scroll to check box
 option_frame = window.OptionsFrame
 option_frame_rect = option_frame.rectangle()
 
-movement = d[license]
-h = option_frame_rect.right - 10
-vs = option_frame_rect.top + 30
-ve = vs + movement
+horizontal_pos = option_frame_rect.right - 10
+vertical_start_pos = option_frame_rect.top + 30
 
-mouse.press(button="left", coords=(h, vs))
-mouse.release(button="left", coords=(h, ve))
 
-# Check
-check_box_name = f"Lock{license}_prdCheckBox"
-window[check_box_name].check_by_click()
+for license in licenses:
+	
+    movement = d[license]
+    vertical_end_pos = vertical_start_pos + movement
+
+    mouse.press(button="left", coords=(horizontal_pos, vertical_start_pos))
+    mouse.release(button="left", coords=(horizontal_pos, vertical_end_pos))
+
+    # Check
+    check_box_name = f"Lock{license}_prdCheckBox"
+    window[check_box_name].check_by_click()
+
+    if window.texts()[0] == "Licensing Warning":
+        window.OK.click()
+        if window.texts()[0] == "License Manager":
+            window.OK.click()
+
+        print(f"ERROR: {license} license not definied!")
+
+    mouse.press(button="left", coords=(horizontal_pos, vertical_end_pos))
+    mouse.release(button="left", coords=(horizontal_pos, vertical_start_pos))
+
 window.OK.click()
