@@ -1,5 +1,6 @@
-# Activate shareable license using pywinauto
-# Requirement screen height > 950px
+# Activate shareable licenses using pywinauto
+# Requirements: CATIA runnning and screen resolution height > 951px
+
 from pywinauto.application import Application
 from pywinauto import mouse
 from pywinauto.keyboard import send_keys
