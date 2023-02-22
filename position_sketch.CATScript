@@ -37,11 +37,11 @@ origin.GetCoordinates origin_coords
 
 ' get orientation direction
 Dim h_orientation_dir(2)
-orientation.GetDirection h_orientation_dir
+h_orientation.GetDirection h_orientation_dir
 
 ' get orientation direction
 Dim v_orientation_dir(2)
-orientation2.GetDirection v_orientation_dir
+v_orientation.GetDirection v_orientation_dir
 
 Dim sketches
 Set sketches = hybrid_body.HybridSketches
