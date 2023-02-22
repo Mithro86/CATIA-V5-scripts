@@ -1,0 +1,67 @@
+Sub CATMain()
+
+Dim document
+Set document = CATIA.ActiveDocument
+
+Dim part
+Set part = document.part
+
+Dim hybrid_bodies
+Set hybrid_bodies = part.HybridBodies
+
+Dim hybrid_body
+Set hybrid_body = hybrid_bodies.Item("Geometrical Set.1")
+
+Dim hybrid_shapes
+Set hybrid_shapes = hybrid_body.HybridShapes
+
+' get planar support object
+Dim planar_support
+Set planar_support = hybrid_shapes.Item("Plane.1")
+
+' get origin object
+Dim origin
+Set origin = hybrid_shapes.Item("Point.1")
+
+' get orientation object
+Dim h_orientation
+Set h_orientation = hybrid_shapes.Item("Line.1")
+
+' get orientation object
+Dim v_orientation
+Set v_orientation = hybrid_shapes.Item("Line.2")
+
+' get origin coordinates
+Dim origin_coords(2)
+origin.GetCoordinates origin_coords
+
+' get orientation direction
+Dim h_orientation_dir(2)
+orientation.GetDirection h_orientation_dir
+
+' get orientation direction
+Dim v_orientation_dir(2)
+orientation2.GetDirection v_orientation_dir
+
+Dim sketches
+Set sketches = hybrid_body.HybridSketches
+
+Dim position_array(8)
+
+position_array(0) = origin_coords(0)
+position_array(1) = origin_coords(1)
+position_array(2) = origin_coords(2)
+position_array(3) = h_orientation_dir(0)
+position_array(4) = h_orientation_dir(1)
+position_array(5) = h_orientation_dir(2)
+position_array(6) = v_orientation_dir(0)
+position_array(7) = v_orientation_dir(1)
+position_array(8) = v_orientation_dir(2)
+
+Dim sketch
+Set sketch = sketches.Add(planar_support)
+
+sketch.SetAbsoluteAxisData (position_array)
+
+part.Update
+End Sub
