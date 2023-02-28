@@ -5,6 +5,7 @@ from pywinauto.application import Application
 from pywinauto import mouse
 from pywinauto.keyboard import send_keys
 from time import sleep
+from pycatia import catia
 
 # Licenses to activate
 licenses = ["PEO", "KIN", "GAS", "FMD"]
@@ -114,15 +115,8 @@ d = {
     "WS1": 350,
 }
 
-# Connect to CATIA
-app = Application()
-app.connect(title="CATIA V5")
-catia = app.catia_v5
-catia.set_focus()
-
-# Tools -> Options...
-send_keys("%t")
-send_keys("o")
+caa = catia()
+caa.start_command("Options")
 
 # Connect to Options
 app = Application().connect(title="Options", timeout=30)
